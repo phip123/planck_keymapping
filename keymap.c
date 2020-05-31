@@ -19,7 +19,7 @@
 
 enum planck_layers
 {
-    _QWERTY, _COLEMAK, _DVORAK, _LOWER, _RAISE, _PLOVER, _ADJUST, _MY_LAYER
+    _QWERTY, _COLEMAK, _DVORAK, _LOWER, _RAISE, _PLOVER, _ADJUST, _JETBRAINS_LAYER, _OVERLEAF_LAYER
 };
 
 enum planck_keycodes
@@ -37,22 +37,27 @@ enum planck_keycodes
     JETBRAINS_TERMINAL,
     JETBRAINS_PROJECT,
     ALT_INSERT,
-    JETBRAINS_REFORMAT
+    JETBRAINS_REFORMAT,
+    LATEX_CITE,
+    LATEX_ITEMIZE,
+    LATEX_ENUMERATE,
+    LATEX_REF
 };
 
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
-#define MY_LAYER MO(_MY_LAYER)
-const uint16_t PROGMEM
+#define JETBRAINS_LAYER MO(_JETBRAINS_LAYER)
+#define OVERLEAF_LAYER MO(_OVERLEAF_LAYER)
 
-keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+
+const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_QWERTY]  =
 
 LAYOUT_ortho_4x12(
     KC_ESC, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_BSPC,
-    LT(MY_LAYER, KC_TAB), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,
+    LT(OVERLEAF_LAYER, KC_TAB), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,
     KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_ENT,
-    KC_LCTL, KC_LGUI, MY_LAYER, KC_LALT,
+    KC_LCTL, KC_LGUI, OVERLEAF_LAYER, KC_LALT,
 
 LOWER, KC_SPC, KC_SPC, RAISE, KC_RALT, KC_RGUI, KC_RSFT, KC_RCTL
 
@@ -111,6 +116,13 @@ LAYOUT_ortho_4x12(
     KC_LSFT, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, ALT_INSERT, KC_NO, KC_HOME, KC_END, KC_NO, LALT(KC_ENT),
     KC_LCTRL, KC_LGUI, KC_LALT, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_RSFT, KC_RCTL
 
+),
+[8] =
+LAYOUT_ortho_4x12(
+    _______, _______, _______, _______, LATEX_REF, _______, _______, _______, KC_UP, _______, _______, KC_DEL,
+    KC_TRNS, _______, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
+    KC_LSFT, _______, _______, LATEX_CITE, _______, _______, _______, _______, KC_HOME, KC_END, _______, _______,
+    _______, _______, _______, KC_TRNS, _______, _______, _______, _______, _______, _______, KC_RSFT, KC_RCTL
 )};
 
 #ifdef AUDIO_ENABLE
