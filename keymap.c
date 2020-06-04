@@ -45,7 +45,9 @@ enum planck_keycodes
     LATEX_MATH,
     LATEX_INLINE_MATH,
     LATEX_FOOTNOTE,
-    LATEX_URL
+    LATEX_URL,
+    LATEX_SUBSCRIPT,
+    LATEX_SUPERSCRIPT
 };
 
 #define LOWER MO(_LOWER)
@@ -126,7 +128,7 @@ LAYOUT_ortho_4x12(
     _______, _______, LATEX_URL, _______, LATEX_REF, _______, _______, BROWSER_BACKWARDS, KC_UP, BROWSER_FORWARD, _______, KC_DEL,
     KC_TRNS, _______, _______, _______, LATEX_FOOTNOTE, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
     KC_LSFT, _______, _______, LATEX_CITE, _______, _______, LATEX_INLINE_MATH, LATEX_MATH, KC_HOME, KC_END, _______, _______,
-    _______, _______, _______, KC_TRNS, _______, _______, _______, _______, _______, _______, KC_RSFT, KC_RCTL
+    _______, _______, _______, KC_TRNS, LATEX_SUBSCRIPT, _______, _______, LATEX_SUPERSCRIPT, _______, _______, KC_RSFT, KC_RCTL
 )};
 
 #ifdef AUDIO_ENABLE
@@ -350,6 +352,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
     case LATEX_URL:
         if (record -> event.pressed) {
             SEND_STRING("\\url{}"SS_TAP(X_LEFT));
+        }
+
+        return true;
+        break;
+
+    case LATEX_SUPERSCRIPT:
+        if (record -> event.pressed) {
+            SEND_STRING("^{}"SS_TAP(X_LEFT));
+        }
+
+        return true;
+        break;
+
+    case LATEX_SUBSCRIPT:
+        if (record -> event.pressed) {
+            SEND_STRING("_{}"SS_TAP(X_LEFT));
         }
 
         return true;
