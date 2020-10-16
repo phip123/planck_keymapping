@@ -47,7 +47,8 @@ enum planck_keycodes
     LATEX_FOOTNOTE,
     LATEX_URL,
     LATEX_SUBSCRIPT,
-    LATEX_SUPERSCRIPT
+    LATEX_SUPERSCRIPT,
+    PYCHARM_PYTHON_CONSOLE
 };
 
 #define LOWER MO(_LOWER)
@@ -55,25 +56,38 @@ enum planck_keycodes
 #define JETBRAINS_LAYER MO(_JETBRAINS_LAYER)
 #define OVERLEAF_LAYER MO(_OVERLEAF_LAYER)
 
+//Tap Dance Declarations
+enum
+{
+    TD_SWITCH_LAYER = 0
+};
+
+//Tap Dance Definitions
+qk_tap_dance_action_t tap_dance_actions[] = {
+    //Tap once for Esc, twice for Caps Lock
+    [TD_SWITCH_LAYER]  = ACTION_TAP_DANCE_LAYER_TOGGLE(KC_NO, _COLEMAK)
+// Other declarations would go here, separated by commas, if you have them
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_QWERTY]  =
 
 LAYOUT_ortho_4x12(
     KC_ESC, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_BSPC,
-    LT(OVERLEAF_LAYER, KC_TAB), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,
+    LT(JETBRAINS_LAYER, KC_TAB), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,
     KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_ENT,
-    KC_LCTL, KC_LGUI, OVERLEAF_LAYER, KC_LALT,
+    KC_LCTL, KC_LGUI, TD(TD_SWITCH_LAYER), KC_LALT,
 
 LOWER, KC_SPC, KC_SPC, RAISE, KC_RALT, KC_RGUI, KC_RSFT, KC_RCTL
 
 ),
 [_COLEMAK] =
 
-LAYOUT_ortho_4x12(KC_TAB, KC_Q, KC_W, KC_F, KC_P, KC_G, KC_J, KC_L, KC_U, KC_Y, KC_SCLN, KC_BSPC, KC_ESC, KC_A, KC_R,
-    KC_S, KC_T, KC_D, KC_H, KC_N, KC_E, KC_I, KC_O, KC_QUOT, KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_K, KC_M, KC_COMM,
-    KC_DOT, KC_SLSH, KC_ENT, BL_STEP, KC_LCTL, KC_LALT, KC_LGUI, LOWER, KC_SPC, KC_SPC, RAISE, KC_LEFT,
-    KC_DOWN, KC_UP, KC_RGHT
+LAYOUT_ortho_4x12(
+    KC_ESC, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_BSPC,
+    LT(OVERLEAF_LAYER, KC_TAB), KC_A, KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT,
+    KC_LSFT, KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_ENT,
+    KC_LCTL, KC_LGUI, TD(TD_SWITCH_LAYER), KC_LALT, LOWER, KC_SPC, KC_SPC, RAISE, KC_RALT, KC_RGUI, KC_RSFT, KC_RCTL
 
 ),
 [_DVORAK]  =
@@ -88,7 +102,7 @@ LAYOUT_ortho_4x12(KC_TAB, KC_QUOT, KC_COMM, KC_DOT, KC_P, KC_Y, KC_F, KC_G, KC_C
 
 LAYOUT_ortho_4x12(KC_TILD, KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
     KC_DEL, KC_DEL, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE, KC_TRNS,
-    KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, LSFT(KC_NUHS),KC_HOME, KC_END, LSFT(KC_NUBS), KC_RSFT, KC_TRNS,
+    KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, LSFT(KC_NUHS), KC_HOME, KC_END, LSFT(KC_NUBS), KC_RSFT, KC_TRNS,
     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, _______, KC_VOLD, KC_VOLU, _______
 
 ),
@@ -107,28 +121,37 @@ LAYOUT_ortho_4x12(KC_1, KC_1, KC_1, KC_1, KC_1, KC_1, KC_1, KC_1, KC_1, KC_1, KC
     KC_QUOT, TO(_QWERTY), KC_NO, KC_NO, KC_C, KC_V, KC_NO, KC_NO, KC_N, KC_M, KC_NO, KC_NO, KC_NO
 
 ),
-[_ADJUST] = LAYOUT_planck_grid(
-    _______, RESET,   DEBUG,   RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD,  RGB_VAI, RGB_VAD, KC_DEL ,
-    _______, _______, MU_MOD,  AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY,  COLEMAK,  DVORAK,  PLOVER,  _______,
-    _______, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  MI_ON,   MI_OFF,  TERM_ON, TERM_OFF, _______, _______, _______,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______
+[_ADJUST] =
+
+LAYOUT_planck_grid(
+    _______, RESET, DEBUG, RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD, KC_DEL,
+    _______, _______, MU_MOD, AU_ON, AU_OFF, AG_NORM, AG_SWAP, QWERTY, COLEMAK, DVORAK, PLOVER, _______,
+    _______, MUV_DE, MUV_IN, MU_ON, MU_OFF, MI_ON, MI_OFF, TERM_ON, TERM_OFF, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+
 ),
 [7]        =
 
 LAYOUT_ortho_4x12(
-    LALT(KC_TAB), KC_NO, KC_NO, KC_NO, JETBRAINS_RUN, JETBRAINS_TERMINAL, KC_NO, BROWSER_BACKWARDS, KC_UP, BROWSER_FORWARD,
+    LALT(KC_TAB), KC_NO, KC_NO, KC_NO, JETBRAINS_RUN, JETBRAINS_TERMINAL, KC_NO, BROWSER_BACKWARDS, KC_UP,
+    BROWSER_FORWARD,
     JETBRAINS_PROJECT, KC_DEL,
     KC_NO, KC_NO, KC_NO, JETBRAINS_DEBUG, JETBRAINS_REFORMAT, KC_NO, KC_NO, KC_LEFT, KC_DOWN, KC_RGHT, KC_NO, KC_NO,
-    KC_LSFT, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, ALT_INSERT, KC_NO, KC_HOME, KC_END, KC_NO, LALT(KC_ENT),
+    KC_LSFT, KC_NO, KC_NO, PYCHARM_PYTHON_CONSOLE, KC_NO, KC_NO, ALT_INSERT, KC_NO, KC_HOME, KC_END, KC_NO, LALT(KC_ENT),
     KC_LCTRL, KC_LGUI, KC_LALT, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_RSFT, KC_RCTL
 
 ),
 [8] =
+
 LAYOUT_ortho_4x12(
-    _______, _______, LATEX_URL, _______, LATEX_REF, _______, _______, BROWSER_BACKWARDS, KC_UP, BROWSER_FORWARD, _______, KC_DEL,
+    _______, _______, LATEX_URL, _______, LATEX_REF, _______, _______, BROWSER_BACKWARDS, KC_UP, BROWSER_FORWARD,
+    _______, KC_DEL,
     KC_TRNS, _______, _______, _______, LATEX_FOOTNOTE, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
-    KC_LSFT, _______, _______, LATEX_CITE, _______, _______, LATEX_INLINE_MATH, LATEX_MATH, KC_HOME, KC_END, _______, _______,
-    _______, _______, _______, KC_TRNS, LATEX_SUBSCRIPT, _______, _______, LATEX_SUPERSCRIPT, _______, _______, KC_RSFT, KC_RCTL
+    KC_LSFT, _______, _______, LATEX_CITE, _______, _______, LATEX_INLINE_MATH, LATEX_MATH, KC_HOME, KC_END, _______,
+    _______,
+    _______, _______, _______, KC_TRNS, LATEX_SUBSCRIPT, _______, _______, LATEX_SUPERSCRIPT, _______, _______, KC_RSFT,
+    KC_RCTL
+
 )};
 
 #ifdef AUDIO_ENABLE
@@ -302,7 +325,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             register_code(KC_LALT);
             register_code(KC_LCTL);
             register_code(KC_L);
-        } else {
+        }
+        else {
             unregister_code(KC_LALT);
             unregister_code(KC_LCTL);
             unregister_code(KC_L);
@@ -310,9 +334,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
 
         return false;
         break;
+    case PYCHARM_PYTHON_CONSOLE:
+        if (record->event.pressed) {
+            register_code(KC_LALT);
+            register_code(KC_F9);
+        }
+        else {
+            unregister_code(KC_LALT);
+            unregister_code(KC_F9);
+        }
+
+        return false;
+        break;
+
     case LATEX_CITE:
         if (record->event.pressed) {
-            SEND_STRING("\\cite{}"SS_TAP(X_LEFT));
+            SEND_STRING("\\cite{}"
+            SS_TAP(X_LEFT));
         }
 
         return true;
@@ -320,7 +358,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
 
     case LATEX_REF:
         if (record->event.pressed) {
-            SEND_STRING("\\ref{}"SS_TAP(X_LEFT));
+            SEND_STRING("\\ref{}"
+            SS_TAP(X_LEFT));
         }
 
         return true;
@@ -328,46 +367,53 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
 
     case LATEX_MATH:
         if (record->event.pressed) {
-            SEND_STRING("\\[\\]"SS_TAP(X_LEFT)SS_TAP(X_LEFT));
+            SEND_STRING("\\[\\]"
+            SS_TAP(X_LEFT)
+            SS_TAP(X_LEFT));
         }
 
         return true;
         break;
     case LATEX_INLINE_MATH:
         if (record->event.pressed) {
-            SEND_STRING("$$"SS_TAP(X_LEFT));
+            SEND_STRING("$$"
+            SS_TAP(X_LEFT));
         }
 
         return true;
         break;
 
     case LATEX_FOOTNOTE:
-        if (record -> event.pressed) {
-            SEND_STRING("\\footnote{}"SS_TAP(X_LEFT));
+        if (record->event.pressed) {
+            SEND_STRING("\\footnote{}"
+            SS_TAP(X_LEFT));
         }
 
         return true;
         break;
 
     case LATEX_URL:
-        if (record -> event.pressed) {
-            SEND_STRING("\\url{}"SS_TAP(X_LEFT));
+        if (record->event.pressed) {
+            SEND_STRING("\\url{}"
+            SS_TAP(X_LEFT));
         }
 
         return true;
         break;
 
     case LATEX_SUPERSCRIPT:
-        if (record -> event.pressed) {
-            SEND_STRING("^{}"SS_TAP(X_LEFT));
+        if (record->event.pressed) {
+            SEND_STRING("^{}"
+            SS_TAP(X_LEFT));
         }
 
         return true;
         break;
 
     case LATEX_SUBSCRIPT:
-        if (record -> event.pressed) {
-            SEND_STRING("_{}"SS_TAP(X_LEFT));
+        if (record->event.pressed) {
+            SEND_STRING("_{}"
+            SS_TAP(X_LEFT));
         }
 
         return true;
